@@ -1,0 +1,53 @@
+* {
+   padding: 0px;
+   margin:0px;
+}
+
+.center {
+   width: 800px;
+   margin-left: auto;
+   margin-right: auto;
+}
+
+.topbar {
+   width: 800px;
+   float: left;
+   background-color: #777;
+}
+
+.main {
+   width: 788px;
+   float: left;
+   background-color: #EFEFEF;
+   border: 1px solid black;
+   padding: 0px 5px 50px;
+}
+
+.main h1 {
+   text-indent: 25px;
+}
+
+ul {
+    list-style-type: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+li {
+    float: left;
+    border-right: 1px solid black; 
+}
+
+li a {
+    display: block;
+    color: white;
+    padding: 16px;
+    background-color: #404040;
+}
+
+li a:hover {
+    background-color: black;
+}
+.active {
+    background-color: black;
+} 
