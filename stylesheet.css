@@ -27,27 +27,55 @@
    text-indent: 25px;
 }
 
-ul {
+div.topbar ul {
     list-style-type: none;
     margin-left: auto;
     margin-right: auto;
 }
 
-li {
+div.topbar li {
     float: left;
     border-right: 1px solid black; 
 }
 
-li a {
+div.topbar li a {
     display: block;
     color: white;
     padding: 16px;
     background-color: #404040;
 }
 
-li a:hover {
+div.topbar li a:hover {
     background-color: black;
 }
-.active {
+div.topbar .active {
     background-color: black;
-} 
+}
+
+ul {
+    margin-left: 20px;
+}
+
+.apicall {
+    padding: 5px 0px 5px;
+    text-indent: 20px;
+    background: #FFF;
+    height: 20px;
+    width: 100%;
+    border: solid 1px black;
+    border-radius: 10px;
+    display:block;
+}
+
+a button.move {
+    display: block;
+    color: white;
+    padding: 16px;
+    background-color: #404040;
+    float: left;
+}
+
+a:hover button.move {
+    background-color: black;
+    cursor: pointer;
+}

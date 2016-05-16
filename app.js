@@ -19,10 +19,38 @@ app.set('port', 3003);
 app.use(express.static(__dirname + '/'));
 
 app.get('/',function(req,res){
-  res.render('getStarted');
+  var context ={};
+
+  res.render('getStarted', context);
 });
 
-app.get('/about',function(req,res){
+app.get('/Keys',function(req,res){
+  var context ={};
+
+  res.render('keys', context);
+});
+
+app.get('/ErrorCodes',function(req,res){
+  var context ={};
+
+  res.render('errorcodes', context);
+});
+
+app.get('/ExampleCall',function(req,res){
+  var context ={};
+
+  res.render('example', context);
+});
+
+app.get('/UsefulLinks',function(req,res){
+  var context ={};
+
+  res.render('usefullinks', context);
+});
+
+app.get('/destroysession',function(req,res){
+  req.session.destroy();
+
   res.render('page2');
 });
 
