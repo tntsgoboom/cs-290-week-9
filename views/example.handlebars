@@ -1,16 +1,87 @@
-<h2>Calling summoner ID</h2><br>
-    <p>Let's say you want to pull up the stats of a summoner. You would first have to make a call to the summoner section of the API to get the summoner ID. You can make this call using their region and their summoner name as follows:<br>
-        <span class="apicall">/api/lol/{region}/v1.4/summoner/by-name/{summonerNames}</span><br>
-    After you retreive the summoner ID then you can make a secondary call to the stats section of the API.<br>
-        <span class="apicall">/api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/summary</span><br>
-    From here you can get tons of stats on the summoner including but not limited to averageAssists, averageChampionsKilled, averageComabatPlayerScore, etc.<br>
-    In the Riot API alot of information can be gathered however you generally need to make two or three calls to different sections of the API. These sections include champion, championmastery, current-game, featured-games, game, league, lol-static-data, lol-status, match, matchlist, stats, summoner, and team. Each one of these sections has a version number that you also have to include but it changes based on when they update the API. I'll explain what you can use some of these sections for:</p><br>
-    <h3>Champion:</h3>
-    <p> One of the more useful things in this section is to find out what champions are in the current weeks rotation. But you could also find out which champions can be played against as bots. As well as what champions are disabled for ranked play.</p><br>
-    <h3>Game:</h3>
-    <p> In the game section you can get a list of the most recent games that a summoner has played using their summoner ID. Like before you would have to get the summoner ID from an inputed name. From this list of games you can get subsequent data such as champion ID which would be the champion they played during a partciular game. You can also get how much IP they gained from a match as well as what the game mode was. There is actually a lot of data that can be aquired from this section.</p><br>
-    <h3>League:</h3>
-    <p> This section would mainly be used to find particular stats found on a summoners league or a teams league. If you wanted you can also get lists of the players in challenger and master divisions. </p><br>
-    <h3>Static-data:</h3>
-    <p> Unlike the other sections that change static data is meant to find specific information on champions, items, and runes whos information does not change. So making calls to this section you can find out things like the champions name from the ID of the champion or the champions icon or other information. These calls also don't count towards your API call limit because the information is static. </p><br>
-<a href="/ErrorCodes"><button type="button" class="move">Prev</button></a><a href="/UsefulLinks"><button type="button" class="move">Next</button></a>
+<h2>Example Call</h2>
+<br>
+<form id="askSummoner">
+  Find 10 most recent champions played by a summoner<br>
+  <br>
+  Summoner Name: <input id="name" maxlength="255" name="name" type="text" /><br>
+  <button id="insert" type="button" value="insert">Find champs</button>
+</form>
+<br>
+<ol id="champList">
+<li style="visibility:hidden"></li>
+<li style="visibility:hidden"></li>
+<li style="visibility:hidden"></li>
+<li style="visibility:hidden"></li>
+<li style="visibility:hidden"></li>
+<li style="visibility:hidden"></li>
+<li style="visibility:hidden"></li>
+<li style="visibility:hidden"></li>
+<li style="visibility:hidden"></li>
+<li style="visibility:hidden"></li>
+</ol>
+<br>
+<br>
+<h3>How it works:</h3>
+<p>
+First we make a call to get the SummonerID. Once we have the SummonerID we can use that to call recent games based on the ID. That will return an array with a default of 10 most recent games. In each one we can grab the championID for that game and then make a call to the static champion data to get the champion name. After we get the champion name, we populate the list item for that call.
+</p>
+<br>
+<h3>Initial Call:</h3>
+<p>
+<span class="apicall">
+var reqSumId = new XMLHttpRequest();<br>
+    reqSumId.open('GET', 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/'+name+'?api_key=', true);<br>
+    reqSumId.addEventListener('load',function(){<br>
+      if(reqSumId.status >= 200 && reqSumId.status < 400) {<br>
+	var response = JSON.parse(reqSumId.responseText);<br>
+	name = name.toLowerCase();<br>
+	var sumId = response[""+name].id;<br>
+<br>
+	console.log(sumId);<br>
+</span>
+<br>
+Again we create the XMLHttpRequest, which the RiotApi uses only get requests. When we get the response back, the object that is returned is named the lowercase version of the summonername. So we use the name variable as a string and get the id of that object. For debugging I console the summoner ID.<br>
+</p>
+<br>
+<h3>Getting recent games:</h3>
+<p>
+<span class="apicall">
+var reqRG = new XMLHttpRequest();<br>
+	reqRG.open('GET', 'https://na.api.pvp.net/api/lol/na/v1.3/game/by-summoner/'+sumId+'/recent?api_key=', true);<br>
+	reqRG.addEventListener('load', function() {<br>
+	  if(reqRG.status >= 200 && reqRG.status < 400) {<br>
+	    var response = JSON.parse(reqRG.responseText);<br>
+	    
+	    var champId = {};<br>
+	    var reqChamp = {};<br>
+	    for(var i = 0; i < 10; i++) {<br>
+	      champId[i] = response.games[i].championId;<br>
+	      console.log(champId[i]);<br>
+</span>
+<br>
+Creating a new XMLHttpRequest to handle getting the most recent games. Once we get that object back, we prepare for making 10 asynchronous calls to get each champion name. We do this by creating a champId object and a reqChamp object to hold all our IDs and XMLHttpRequests together with the same 'i' value.
+</p>
+<br>
+<h3>Getting each champion name and populating the list:</h3>
+<p>
+<span class="apicall">
+reqChamp[i] = new XMLHttpRequest();<br>
+	      reqChamp[i].order = i;<br>
+	      reqChamp[i].open('GET', 'https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/'+champId[i]+'?api_key=', true);<br>
+	      reqChamp[i].addEventListener('load', function() {<br>
+		if(this.status >= 200 && this.status < 400) {<br>
+		  var response = JSON.parse(this.responseText);<br>
+<br>
+		  console.log(this.order);<br>
+		  console.log(response.name);<br>
+<br>
+		  champList.children[this.order].innerHTML = response.name;<br>
+		  champList.children[this.order].style.visibility = "visible";<br>
+</span>
+<br>
+For each of the 10 recent games we create a new XMLHttpRequest. To keep track of the most recent champions first, we set a parameter 'order' that we can use inside our anonymous function. Then once we get the champion name back, we set the text of the li to the champion name and set it to visible.
+</p>
+<br>
+<a href="/BasicCall"><button type="button" class="move">Prev</button></a><a href="/UsefulLinks"><button type="button" class="move">Next</button></a>
+<script src="func.js"></script>
+

@@ -36,6 +36,12 @@ app.get('/ErrorCodes',function(req,res){
   res.render('errorcodes', context);
 });
 
+app.get('/BasicCall',function(req,res){
+  var context ={};
+
+  res.render('basiccall', context);
+});
+
 app.get('/ExampleCall',function(req,res){
   var context ={};
 

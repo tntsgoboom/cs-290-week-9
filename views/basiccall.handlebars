@@ -1,0 +1,16 @@
+<h2>Calling summoner ID</h2><br>
+    <p>Let's say you want to pull up the stats of a summoner. You would first have to make a call to the summoner section of the API to get the summoner ID. You can make this call using their region and their summoner name as follows:<br>
+        <span class="apicall">/api/lol/{region}/v1.4/summoner/by-name/{summonerNames}</span><br>
+    After you retreive the summoner ID then you can make a secondary call to the stats section of the API.<br>
+        <span class="apicall">/api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/summary</span><br>
+    From here you can get tons of stats on the summoner including but not limited to averageAssists, averageChampionsKilled, averageComabatPlayerScore, etc.<br>
+    In the Riot API alot of information can be gathered however you generally need to make two or three calls to different sections of the API. These sections include champion, championmastery, current-game, featured-games, game, league, lol-static-data, lol-status, match, matchlist, stats, summoner, and team. Each one of these sections has a version number that you also have to include but it changes based on when they update the API. I'll explain what you can use some of these sections for:</p><br>
+    <h3>Champion:</h3>
+    <p> One of the more useful things in this section is to find out what champions are in the current weeks rotation. But you could also find out which champions can be played against as bots. As well as what champions are disabled for ranked play.</p><br>
+    <h3>Game:</h3>
+    <p> In the game section you can get a list of the most recent games that a summoner has played using their summoner ID. Like before you would have to get the summoner ID from an inputed name. From this list of games you can get subsequent data such as champion ID which would be the champion they played during a partciular game. You can also get how much IP they gained from a match as well as what the game mode was. There is actually a lot of data that can be aquired from this section.</p><br>
+    <h3>League:</h3>
+    <p> This section would mainly be used to find particular stats found on a summoners league or a teams league. If you wanted you can also get lists of the players in challenger and master divisions. </p><br>
+    <h3>Static-data:</h3>
+    <p> Unlike the other sections that change static data is meant to find specific information on champions, items, and runes whos information does not change. So making calls to this section you can find out things like the champions name from the ID of the champion or the champions icon or other information. These calls also don't count towards your API call limit because the information is static. </p><br>
+<a href="/ErrorCodes"><button type="button" class="move">Prev</button></a><a href="/ExampleCall"><button type="button" class="move">Next</button></a>

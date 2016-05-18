@@ -56,12 +56,15 @@ ul {
     margin-left: 20px;
 }
 
+ol {
+    margin-left: 20px;
+}
+
 .apicall {
-    padding: 5px 0px 5px;
-    text-indent: 20px;
+    padding: 5px 0px 5px 20px;
     background: #FFF;
-    height: 20px;
-    width: 100%;
+    min-height: 20px;
+    width: 766px;
     border: solid 1px black;
     border-radius: 10px;
     display:block;
